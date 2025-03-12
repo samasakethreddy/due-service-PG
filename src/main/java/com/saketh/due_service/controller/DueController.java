@@ -7,6 +7,7 @@ import com.saketh.due_service.model.Due;
 import com.saketh.due_service.services.DueService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class DueController {
     private DueService dueService;
 
     @PostMapping
+    @PreAuthorize("hasRole('OWNER')")
     Due createDue(@RequestBody DueRequest dueRequest) {
     	return dueService.saveDue(dueRequest);
     }
@@ -35,6 +37,7 @@ public class DueController {
 
 
     @PostMapping("/spitbills/{room_id}")
+    @PreAuthorize("hasRole('OWNER')")
     List<DueResponse> spitBills(@RequestBody SplitBillsRequest splitBillsRequest, HttpServletRequest request) {
         return dueService.spitBills(splitBillsRequest, request);
     }
